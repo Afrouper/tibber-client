@@ -1,0 +1,44 @@
+{
+    viewer {
+        home(id: "${HOME_ID}") {
+            currentSubscription {
+                priceInfo {
+                    current {
+                        total
+                        startsAt
+                        level
+                    }
+                    tomorrow {
+                        startsAt
+                        total
+                    }
+                    today {
+                        startsAt
+                        total
+                    }
+                }
+            }
+            daily: consumption(resolution: DAILY, last: 1) {
+                nodes {
+                    from
+                    to
+                    cost
+                    unitPrice
+                    consumption
+                    consumptionUnit
+                }
+            }
+            hourly: consumption(resolution: HOURLY, last: 1) {
+                nodes
+                {
+                    from
+                    to
+                    cost
+                    unitPrice
+                    consumption
+                    consumptionUnit
+                }
+            }
+        }
+    }
+}

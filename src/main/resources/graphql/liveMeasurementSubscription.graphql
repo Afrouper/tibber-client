@@ -1,0 +1,27 @@
+subscription {
+    liveMeasurement(homeId:"${HOME_ID}") {
+        timestamp
+        power
+        lastMeterConsumption
+        lastMeterProduction
+        accumulatedConsumption
+        accumulatedConsumptionLastHour
+        accumulatedCost
+        accumulatedReward
+        currency
+        minPower
+        averagePower
+        maxPower
+        voltagePhase1
+        voltagePhase2
+        voltagePhase3
+        currentL1
+        currentL2
+        currentL3
+        powerProduction
+        accumulatedProduction
+        accumulatedProductionLastHour
+        minPowerProduction
+        maxPowerProduction
+    }
+}

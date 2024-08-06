@@ -1,0 +1,10 @@
+{
+  viewer {
+    home(id: "${HOME_ID}") {
+      id
+      features {
+        realTimeConsumptionEnabled
+      }
+    }
+  }
+}

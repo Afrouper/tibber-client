@@ -1,0 +1,19 @@
+package de.afrouper.api.clients.tibber.dto;
+
+public class CompleteMessage extends BaseMessage {
+
+    private String id;
+
+    public CompleteMessage(String id) {
+        super("complete");
+        this.id = id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+}
