@@ -25,12 +25,12 @@ class TibberClientTestIT {
     private boolean errorFound = false;
 
     @BeforeEach
-    public void initTibberClient() throws Exception {
+    public void initTibberClient() {
         tibberClient = new TibberClient(getApiUri(), getApiKey(), getHomeId(), getConnectTimeout(), getRequestTimeout());
     }
 
     @AfterEach
-    public void destroy() throws Exception {
+    public void destroy() {
         tibberClient.stopRealTimeConsumption();
     }
 

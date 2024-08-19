@@ -114,7 +114,7 @@ class WebSocketListener implements Listener {
                 subscribe(webSocket);
                 break;
             case "next":
-                handleNext(webSocket, jsonObject);
+                handleNext(jsonObject);
                 break;
             case "ping":
                 handlePing(webSocket, jsonObject);
@@ -133,7 +133,7 @@ class WebSocketListener implements Listener {
         webSocket.request(1);
     }
 
-    private void handleNext(WebSocket webSocket, JsonObject jsonObject) {
+    private void handleNext(JsonObject jsonObject) {
         if(!jsonObject.has("payload")) {
             TibberClient.LOGGER.error("Payload is missing: {}", jsonObject);
             return;
