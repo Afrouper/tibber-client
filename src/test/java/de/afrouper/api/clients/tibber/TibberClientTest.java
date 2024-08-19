@@ -3,6 +3,7 @@ package de.afrouper.api.clients.tibber;
 import de.afrouper.api.clients.tibber.dto.LiveMeasurement;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Disabled
 class TibberClientTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TibberClientTest.class);

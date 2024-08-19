@@ -10,7 +10,7 @@ import java.net.http.WebSocket.Listener;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
-import java.util.concurrent.CompletionStage;
+import java.util.concurrent.*;
 
 class WebSocketListener implements Listener {
 
@@ -18,15 +18,16 @@ class WebSocketListener implements Listener {
     private final Gson gson;
     private final TibberClient tibberClient;
     private final TibberHandler tibberHandler;
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     private StringBuilder stringBuilder = new StringBuilder();
+    private ScheduledFuture<?> scheduledFuture;
 
     WebSocketListener(TibberClient tibberClient, TibberHandler tibberHandler) {
         this.tibberClient = tibberClient;
         this.tibberHandler = tibberHandler;
         uuid = UUID.randomUUID();
         gson = new GsonBuilder()
-                //.registerTypeAdapter(GraphQL_WS_Base.class, new GraphQlTypeAdapter())
                 .create();
     }
 
@@ -42,6 +43,7 @@ class WebSocketListener implements Listener {
         TibberClient.LOGGER.info("Send WebSocket subscription: {}", json);
         webSocket.sendText(json, true);
         webSocket.request(1);
+        startPing(webSocket);
     }
 
     @Override
@@ -54,6 +56,11 @@ class WebSocketListener implements Listener {
     public CompletionStage<?> onClose(WebSocket webSocket, int statusCode, String reason) {
         tibberClient.webSocketConnectionClosed(statusCode, reason);
         tibberHandler.finished();
+
+        if(scheduledFuture != null) {
+            scheduledFuture.cancel(false);
+        }
+
         return Listener.super.onClose(webSocket, statusCode, reason);
     }
 
@@ -163,5 +170,16 @@ class WebSocketListener implements Listener {
         webSocket.sendText(json, true);
         TibberClient.LOGGER.info("Send subscription: '{}'", json);
         webSocket.request(1);
+    }
+
+    private void startPing(WebSocket webSocket) {
+        if (scheduledFuture == null) {
+            TibberClient.LOGGER.info("Start Ping sender.");
+            Runnable beeper = () -> {
+                ByteBuffer byteBuffer = ByteBuffer.wrap("Ping from Java TibberClient".getBytes(StandardCharsets.UTF_8));
+                webSocket.sendPing(byteBuffer);
+            };
+            scheduledFuture = scheduler.scheduleAtFixedRate(beeper, 1, 1, TimeUnit.MINUTES);
+        }
     }
 }
